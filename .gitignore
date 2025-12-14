@@ -1,5 +1,18 @@
 # idea
 .idea
+__pycache__/
 
 # anghami files
 anghami_files/*
+*.html
+
+# Secrets and Config
+config.ini
+.cache*
+
+# Output and Logs
+output.txt
+*.log
+
+# Debug Scripts
+debug_*.py

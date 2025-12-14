@@ -26,8 +26,9 @@ Follow the steps listed below to begin the playlist migration:
 5. After creating the app, copy the "Client ID" and "Client Secret" values. You may need to click on "Show Client Secret" to reveal it.
 6. Click on "Edit Settings" for your app and set the "Redirect URI" to http://127.0.0.1:8080. After authentication, Spotify will reroute users to this website.
 7. Go to your Spotify account and copy your account username. This will be used to identify your Spotify account during the migration process.
-8. Open the `config.ini` file and update the client ID, client secret and username values with the data you just acquired.
-9. Run the script.
+8. Copy `config.example.ini` to `config.ini`.
+9. Open `config.ini` and update the client ID, client secret and username values with the data you just acquired.
+10. Run the script.
 
 ## Note
 If you saved the HTML file in a different location than the script directory, you will need to update the `html_file_path` variable in `config.int` as well.
@@ -35,6 +36,11 @@ If you saved the HTML file in a different location than the script directory, yo
 Also, do not forget to update the `playlist_name` variable with the name of the playlist you want to migrate.
 
 ## Acknowledgments
+Original Project by [Nouran Abdelhady](https://github.com/nouranAbdelhady/AnghamiToSpotify).
+
+Modifications and fixes by [AhmedFetyan68](https://github.com/Ahmedfetyan68).
+
+## Libraries
 The BeautifulSoup library: https://www.crummy.com/software/BeautifulSoup/
 
 The Spotipy library: https://spotipy.readthedocs.io/
