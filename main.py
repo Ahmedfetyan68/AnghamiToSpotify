@@ -13,7 +13,7 @@ logger = logging.getLogger()
 # Function to load the details from the configuration file
 def load_details():
     config = configparser.ConfigParser()
-    config.read('config.ini')
+    config.read('config.ini', encoding='utf-8')
     html_file_path = config.get('Anghami', 'html_file_path')
     client_id = config.get('Spotify', 'client_id')
     client_secret = config.get('Spotify', 'client_secret')
@@ -34,11 +34,41 @@ def read_html_file(html_file_path):
 
 def extract_songs_and_artists(content):
     soup = BeautifulSoup(content, 'html.parser')
-    class_lst = ["cell cell-title", "cell cell-title marquee"]
-    song_divs = soup.find_all("div", class_=class_lst)
-    artist_divs = soup.find_all("div", {"class": "cell cell-artist"})
-    songs = [div.find("span").text for div in song_divs]
-    artists = [div.text for div in artist_divs]
+    
+    songs = []
+    artists = []
+    
+    # helper to clean text
+    def clean(text):
+        return text.strip() if text else ""
+
+    # The rows seem to be 'a' tags with class 'table-row' based on debug
+    # We will search for the rows directly to ensure we keep pairs together
+    rows = soup.find_all("a", class_="table-row")
+    
+    if not rows:
+        # Fallback or check if they are divs if 'a' tag search fails?
+        # Based on debug it was 'a' tag. Let's try finding both just in case, or Stick to 'a'
+        rows = soup.find_all(class_="table-row")
+
+    for row in rows:
+        song_div = row.find("div", class_=["cell cell-title", "cell cell-title marquee"])
+        artist_div = row.find("div", class_="cell cell-artist")
+        
+        if song_div and artist_div:
+            # Song is usually in a span inside the div
+            song_span = song_div.find("span")
+            song_name = song_span.text if song_span else song_div.text
+            
+            artist_name = artist_div.text
+            
+            songs.append(clean(song_name))
+            artists.append(clean(artist_name))
+        else:
+            # Log missing data if needed, but for now we skip to ensure alignment
+            pass
+            
+            
     return songs, artists
 
 
